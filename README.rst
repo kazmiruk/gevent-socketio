@@ -14,6 +14,8 @@ of code are required to tie-in ``gevent-socketio`` in your framework.
 Note: you need to use the ``gevent`` python WSGI server to use
 ``gevent-socketio``.
 
+This fork fixes fatal memory leaks.
+
 
 Technical overview
 ==================
