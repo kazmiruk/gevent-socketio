@@ -6,6 +6,7 @@ import urlparse
 from gevent.pywsgi import WSGIHandler
 from socketio import transports
 
+
 class SocketIOHandler(WSGIHandler):
     RE_REQUEST_URL = re.compile(r"""
         ^/(?P<resource>.+?)
@@ -164,10 +165,10 @@ class SocketIOHandler(WSGIHandler):
         self.environ['socketio'] = socket
 
         # Create a transport and handle the request likewise
-        self.transport = transport(self, self.config)
+        transport = transport(self, self.config)
 
         # transports register their own spawn'd jobs now
-        self.transport.do_exchange(socket, request_method)
+        transport.do_exchange(socket, request_method)
 
         if not socket.connection_established:
             # This is executed only on the *first* packet of the establishment

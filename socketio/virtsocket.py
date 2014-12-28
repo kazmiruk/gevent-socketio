@@ -232,6 +232,7 @@ class Socket(object):
         if detach:
             self.detach()
 
+        del self.environ
         gevent.killall(self.jobs)
 
     def detach(self):
