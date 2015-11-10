@@ -364,9 +364,8 @@ class Socket(object):
             try:
                 pkt = packet.decode(rawdata, self.json_loads)
             except (ValueError, KeyError, Exception), e:
-                self.error('invalid_packet',
-                    "There was a decoding error when dealing with packet "
-                    "with event: %s... (%s)" % (rawdata[:20], e))
+                self.error('invalid_packet', "There was a decoding error when dealing "
+                                             "with packet with event: %s... (%s)" % (rawdata[:20], e))
                 continue
 
             if pkt['type'] == 'heartbeat':
@@ -382,9 +381,7 @@ class Socket(object):
             endpoint = pkt['endpoint']
 
             if endpoint not in self.namespaces:
-                self.error("no_such_namespace",
-                    "The endpoint you tried to connect to "
-                    "doesn't exist: %s" % endpoint, endpoint=endpoint)
+                log.info("The endpoint you tried to connect to doesn't exist: %s" % endpoint)
                 continue
             elif endpoint in self.active_ns:
                 pkt_ns = self.active_ns[endpoint]
@@ -396,8 +393,7 @@ class Socket(object):
                 # in the order of the MRO
                 for cls in type(pkt_ns).__mro__:
                     if hasattr(cls, 'initialize'):
-                        cls.initialize(pkt_ns)  # use this instead of __init__,
-                                                # for less confusion
+                        cls.initialize(pkt_ns)  # use this instead of __init__, for less confusion
 
                 self.active_ns[endpoint] = pkt_ns
 
@@ -416,9 +412,7 @@ class Socket(object):
 
             # Now, are we still connected ?
             if not self.connected:
-                self.kill(detach=True)  # ?? what,s the best clean-up
-                                        # when its not a
-                                        # user-initiated disconnect
+                self.kill(detach=True)  # ?? what,s the best clean-up when its not a user-initiated disconnect
                 return
 
     def _spawn_receiver_loop(self):
@@ -472,7 +466,6 @@ class Socket(object):
                     log.debug("heartbeat timed out, killing socket")
                     self.kill(detach=True)
                 return
-
 
     def _spawn_heartbeat(self):
         """This functions returns a list of jobs"""
